@@ -1,0 +1,54 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{algDesign}{book}{}
+      \name{author}{2}{}{%
+        {{hash=e405ae3c720db1b0e447ff5b601b968f}{%
+           family={Kleinberg},
+           familyi={K\bibinitperiod},
+           given={Jon},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b68fe90101326ab15c1bc77e49780304}{%
+           family={Tardos},
+           familyi={T\bibinitperiod},
+           given={Eva},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Pearson Education}%
+      }
+      \strng{namehash}{5f00a850c076daec1a38b3d70f739685}
+      \strng{fullhash}{5f00a850c076daec1a38b3d70f739685}
+      \strng{bibnamehash}{5f00a850c076daec1a38b3d70f739685}
+      \strng{authorbibnamehash}{5f00a850c076daec1a38b3d70f739685}
+      \strng{authornamehash}{5f00a850c076daec1a38b3d70f739685}
+      \strng{authorfullhash}{5f00a850c076daec1a38b3d70f739685}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-93-325-1864-3}
+      \field{title}{Algorithm Design}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

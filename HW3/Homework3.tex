@@ -1,0 +1,293 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath,amsthm,amssymb}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{multicol}
+\usepackage[skip=3pt]{caption}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{tabulary}
+\usepackage{times}
+\usepackage{titling}
+\usepackage{datetime}
+%\pagestyle{fancy}
+\usepackage[most]{tcolorbox}
+\usepackage[T1]{fontenc}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\newcommand{\tab}[1][1]{\noindent \hspace{#1cm} }
+
+\usepackage[backend=bibtex8]{biblatex}
+\bibliography{myreferences.bib}
+
+\begin{document}
+
+\section*{} % HEADER
+\noindent \textbf{CSCE 586 - Design and Analysis of Algorithms}
+
+\noindent \textbf{Date:}  \today 
+
+\noindent \textbf{Name:}  Micah Hayden
+
+\noindent \textbf{Assignment:}  Homework \#3
+
+\noindent \textbf{Documentation:}  I discussed a possible way of solving question \#7 with 2Lts Mireles, Hanson, and Magness, specifically the method of dividing the matrix into smaller quadrants for the recursion.
+
+\hrulefill
+
+
+\section*{Chapter 5, Problem \#2}
+
+\subsection*{Problem Statement:}  
+Give an $O(n \log{n})$ algorithm to count the number of significant inversions between two orderings, where a significant inversion occurs when  $i < j$ and $a_i > 2 \cdot a_j$.
+
+\subsection*{Description of Algorithm:}
+This algorithm will utilize the standard divide and conquer algorithm for counting inversions, but will utilize a different compare.  It combines the two algorithms Merge-and-Count and Sort-and-Count \cite{algDesign}.
+
+\begin{algorithm}
+\caption{Counting Significant Inversions - Merge-and-Count(A, B)}
+\label{alg1}
+\begin{algorithmic}
+	\State Merge-and-Count(A,B):
+	\State Maintain a $Current$ pointer into each list, initialized to point to the front elements
+	\State Maintain a $Restart$ pointer for each list, pointing to the front elements.
+	\State Maintain a variable $Count$ for the number of inversions, initialized to 0
+	\While {both $Current$ pointers point to items in lists $A$ or $B$, respectively}
+		\State Let $a_i$ and $b_j$ be the elements pointed to by the $Current$ pointer.
+		\State Let $a_i$ be the element pointed to by the $Inversion$ pointer.
+		% \State Append the smaller of these two to the output list
+		\If {$2 \cdot b_j < a_i$}
+			\Comment If $2 \cdot b_j < a_i$ then $2 \cdot b_j < $ every other element in $A$.
+			\State Increment $Count$ by the number of elements remaining in $A$
+			\State Advance $Current$ pointer in $B$
+		\Else
+			\State Advance the $Current$ pointer in $A$
+		\EndIf
+	\EndWhile
+	
+	\State $Current_{A} \gets Restart_A$
+	\State $Current_{B} \gets Restart_B$
+	\While {both lists are nonempty}
+		\State Let $a_i$ and $b_j$ be the elements pointed to by the $Current$ pointers.
+		\State Append the smaller of these two to the output list $L$.
+		\State Advance the $Current$ pointer in the list from which the smaller element was selected
+	\EndWhile
+
+	\noindent \Return {$Count$ and the merged list $L$}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h!] % enter the algorithm environment
+\caption{Counting Inversions - Sort-and-Count(L) } % give the algorithm a caption
+\label{alg2} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \If {the list has one element} 
+    	\State There are no inversions
+    \Else
+    	\State Divide the list into two halves:
+    	\State - A contains the first $\ceil{n/2}$ elements
+    	\State - B contains the remaining $\floor{n/2}$ elements.
+    	\State $(r_A, \, A) \, = \, Sort-and-Count(A) $
+    	\State $(r_B, \, B) \, = \, Sort-and-Count(B) $
+    	\State $(r, \, L) \, = \, Merge-and-Count(A, B) $
+	\EndIf 
+	
+	\noindent	\Return {$r = r_A + r_B + r$ and the sorted list $L$.}
+\end{algorithmic}
+\end{algorithm}
+
+\vspace{2 cm}
+\subsection*{Proof:}
+Algorithm \#2 is a direct adaptation from the given algorithm to count inversions given in \textit{Algorithm Design}.
+Algorithm \#\ref{alg2} has no changes and thus needs no proof.  The only change to Algorithm \#\ref{alg1} is the introduction of a second while loop.  The first while loop counts the number of significant inversions, which occurs when $2 \cdot b_j < a_i$.  The second while loop merges the two lists $A$ and $B$ into the output list $L$ in the same manner as the text, thus it is correct \cite{algDesign}. \newline
+
+\noindent Because every $a_{i + 1} ... a_n > a_i$; if $2 \cdot b_j < a_i \rightarrow 2 \cdot b_j < (a_{i + 1} ... a_n)$.
+Thus, the algorithm will return the correct count for the number of significant inversions.
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+The comparison for an inversion still occurs in constant time.  The Merge-and-Count procedure takes $O(n)$ time for a list of $n$ elements, plus $n$ operations from the introduction of the second while loop.  Thus, Merge-and-Count takes $O(2 \cdot n) \rightarrow O(n)$. \cite{algDesign}.  
+Sort-and-Count satisfies the recurrence $T(n) \leq 2 \cdot T(n/2) + c \cdot n$ when $n > 2$ and $T(2) \leq c$.
+Thus, the algorithm runs in $O(n \log{n})$ time \cite{algDesign}. 
+
+\noindent \textbf{Best Case:}
+Because the algorithm utilizes a divide-and-conquer approach, it will recursively need to operate until a list has only one element.  The depth of recursion and running time is not affected by the number of inversions present in the list.  Thus, even under a best-case scenario where there are no significant inversions, it will run in $\Omega (n \log{n} )$ time.
+
+\noindent \textbf{Average Case:}
+Given that the best and worst case running times are equivalent, the function is tightly bounded by $\Theta ( n \log{n})$.  Regardless of the input model, the average running time will be the same because it cannot be better or worse.
+
+\noindent \textbf{Difficulty:}  4
+
+\noindent \textbf{Time:}  30 Minutes
+
+\newpage
+\section*{Chapter 5, Problem \# 6}
+\subsection*{Problem Statement:}
+Show how to find a local minimum of $T$ using only $O(\log{n})$ probes to the nodes of $T$.
+
+\subsection*{Description of Algorithm:}
+There is a complete binary tree $T$ of $n$ nodes, where $n = 2^d - 1$ for some $d$.  Each node $v$ of $T$ has a distinct integer label $x_v$.  Let $x = probe(v)$ be the function to determine the integer label $x$ of $v$.  Assume $v$ knows whether or not it has children (pointers to children are null).
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Find-Local-Minimum( $v$ )} % give the algorithm a caption
+\label{alg3} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let the node $v$ be the current node. 
+    \State Let $a$ and $b$ be the left and right children of $v$, respectively.  
+	\If {$v$ has no children} 
+		\State \Return $v$
+	\EndIf
+	\State $x_v \gets probe(v)$
+	\State $x_a \gets probe(a)$
+	\If {$ x_a < x_v $} 
+		\State Find-Local-Minimum(a)
+	\Else
+		\State $x_b \gets probe(b)$
+		\If {$x_b < x_v $ }
+			\State Find-Local-Minimum(b)
+		\Else
+			\State \Return $v$
+			\Comment $x_v < x_a \, \mathbf{and} \, x_v < x_b$, thus, $v$ is a local min. 
+		\EndIf
+	\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+The worst case execution of this algorithm would occur when the local minimum occurs in a leaf of the tree.  However, at each step we only take one of the two possible branches.  Each recursive call occurs in constant time:  at most 3 probes and 3 comparisons.  The subproblem size decreases by half ($n' = \frac{n}{2}$, and there is a single subproblem.
+By \textbf{(5.16)}, this algorithm is bounded $O(\log{n})$ \cite{algDesign}.
+
+
+\noindent \textbf{Best Case:}
+The best case would occur when $T$ has a single node.  This is a full binary tree, satisfying $n = 2^d - 1$:  
+\begin{align*}
+n &= 1 = 2^d - 1 |_{d = 1} = 2^1 - 1 = 1
+\end{align*}
+The algorithm would terminate in constant time because it needs to only check the existence of $v$'s children $a$ and $b$.
+Thus, the algorithm runs in $\Omega(1)$.
+
+\noindent \textbf{Average Case:}
+The average case of this algorithm would occur when a local minimum occurs somewhere in the interior of the tree.  Assume this is at depth $d' = \frac{d}{2}$.  This would simply return when it finds the local minimum, and not continue searching through the tree.
+This situation would execute in $\frac{\log{n}}{2} \rightarrow O(\log{n})$.
+
+\subsection*{Proof:}
+
+\noindent \textbf{Proof of Termination:}
+
+The algorithm will always run to termination because there must exist a local minimum in any tree $T$: either at the root, interior, or at a leaf because all node values $x_v$ are distinct.  Branches are only taken if $x_c < x_v$ where $c$ is a child of node $v$.  Thus, at node $v$, $x_v$ must be less than $x$ of its parent node.  If $v$ has no children, it is the local minimum, otherwise the process recursively continues.  The algorithm returns whenever the first local minimum is found.
+
+\noindent \textbf{Proof of Correctness:}
+
+Anytime a recursive call is made, $x_a < x_v \cup x_b < x_v$.  The algorithm recursively calls itself using a subtree $T'$ of which $a$ or $b$ is the root.  Because the algorithm follows the smallest probed value, $\exists v \in T'$, such that $v$ is a local minimum of $T'$. \newline
+The number of probes $k$ in any recursive call must satisfy $k \leq 3$:  one for the root, and two for the children.  The maximum depth of the tree is given by solving the equation $n = 2^d - 1$ for $d$, which gives the following:
+\begin{equation}
+d = \log_2{(n + 1)}
+\end{equation}
+Thus, the maximum number of probes $f(n)$ is:
+\begin{equation}
+f(n) = 3 \cdot d = 3 \cdot \log_2{ (n+1) }
+\end{equation}
+
+Let $g(n)$ be $\log_2{n}$.  $f(n)$ is $O(g(n))$ if $\lim_{n\to\infty} \frac{ f(n)}{g(n)} = c$ and $c \geq 0$.
+
+\begin{align*}
+\lim_{n\to\infty} \frac{ f(n)}{g(n)} &= c \\
+\lim_{n\to\infty} \frac{ 3 \cdot \log_2{(n + 1)} }{\log_2{n}} 
+	&= \infty  && \text{Apply l'Hopital's rule because limit =} \frac{\infty}{\infty} \\
+\end{align*}
+
+\noindent The following are the values of $f'(n)$ and $g'(n)$, and the remainder of the limit calculation:
+\begin{align*}
+f'(n) &= \frac{3 \cdot \log_2(e)}{n + 1} \text{ and } g'(n) = \frac{\log_2(e)}{n} \\
+\frac{ f'(n)}{g'(n)} &= \frac{3 \cdot n}{n + 1} \\
+\lim_{n\to\infty} \frac{ 3 \cdot n}{n + 1} &= \frac{ \infty}{ \infty }  && \text{Use l'Hopital's rule again} \\
+\lim_{n \to \infty} \frac{ 3 } {1} &= 3 = c \geq 0 
+\end{align*}
+
+\noindent Thus, $f(n)$ is $O(g(n)) = O( \log(n))$ because $\lim_{n \to \infty} \frac{f(n)}{g(n)} = 3$.  Where $f(n)$ is the number of probes to find the solution. 
+
+\noindent \textbf{Difficulty:}  6
+
+\noindent \textbf{Time:}  60 Minutes, mostly showing the proof of the \# of probes.
+
+\newpage
+\section*{Chapter 5, Problem \# 7}
+\subsection*{Problem Statement:}
+Suppose you're given an $n \times n$ grid graph $G$.
+Show how to find a local minimum of $G$ using only $O(n)$ probes to the nodes of $G$.
+
+\subsection*{Description of Algorithm:}
+This algorithm will probe each element on the center column, center row, and the boundary of the $n \times n$ matrix.  
+When it finds that minimum value, it checks that node's un-probed neighbors.  If the node is the local minimum, the algorithm returns it as the solution.  Otherwise, the algorithm will recurse into the quadrant containing the minimum-value neighbor \cite{MIT}.  This will convert the subproblem size from a $n \times n$ matrix to an $\approx \frac{n}{2} \times \frac{n}{2}$ matrix.  
+
+\begin{algorithm}
+\caption{Find-Local-Min( $G$ )}
+\begin{algorithmic}
+\State Probe all nodes $v_n$ on the boundary, middle column, and middle row of $G$
+\State $v_{min} \gets$ minimum value of the previous step's probes.
+\If {$n \leq 3$} 
+	\State All nodes in $G$ have been probed
+	\State \Return $v_{min}$
+\Else
+	\If { $v_{min} < $ neighbors} 
+		\State \Return $v_{min}$ as local minimum
+	\Else
+		\State Let $G'$ be the $n' \times n'$ matrix of the quadrant containing $v_{min}$'s minimum-value neighbor, where 
+		$n' \leq \ceil{ \frac{n-3}{2}}$.
+		\State Find-Local-Min($G'$)
+	\EndIf
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\textbf{Note:} $G'$ has $n' \leq \frac{n-3}{2}$ because 3 rows and 3 columns have already been probed, and its dimension contains at most half of the remaining unprobed rows and columns.
+ 
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+Because this algorithm reduces the size of the subproblem by half at each recursion, and there is only one subproblem considered, the algorithm is bounded by $O(n)$ by \textbf{(5.5)} \cite{algDesign}.
+ 
+\noindent \textbf{Best Case:}
+The best case scenario occurs when $n = 1$, in which case there is a single operation $\Omega(1)$.  However, because $n=1$, this can be written as $\Omega(n)$.  Thus, because the best and worst case bounds are the same, the function is tightly bound by $n$, making its run time $\Theta(n)$.
+  
+\noindent \textbf{Average Case:}
+Because the algorithm is tightly bound by $\Theta(n)$, its average case is trivial, and will still run proportional to the dimension of the matrix $n$.  However, the average run time would depend on the dimension of the matrix, and how the values of each node are arranged (some might find it on the first pass, on the boundary, or buried somewhere within the matrix).
+
+\subsection*{Proof:}
+\noindent \textbf{Proof of Correctness:}
+The algorithm begins by searching the entire boundary, the center row, and the center column. 
+Let $v_{min}$ be the minimum value found. If $v_{min}$ is smaller than its neighbors, it is a local minimum.
+Otherwise, let $v'_{min}$ be its smallest neighbor.  Because $v'_{min} < v_{min}$, $v'_{min}$ is smaller than every other value so-far probed in graph $G$.
+When the recursive call is made, $v'_{min}$ will lie on the boundary of sub-graph $G'$. 
+\newline \noindent If the algorithm determines that there exists a local minimum, $k$, on the boundary of $G'$, then $k \leq v'_{min}$, and is thus smaller than its neighboring values in $G$ because $v'_{min} < v_{min}$.
+\newline \noindent If $G$ is a 3x3 matrix, all nodes will be examined and will return $v_{min}$, the local minimum.  
+\newline \noindent At each step of the algorithm, we follow the smallest value that has been found up to that point.  This will converge by the principle of steepest descent \cite{Matrix}.
+
+\noindent \textbf{Proof of $O(n)$ Probes:}
+In each function, there are $\approx 6 \cdot n$ probes (in reality, it is slightly smaller because that would indicate double counting some of the nodes), approximating to a larger number will not affect the asymptotic analysis.  Each subsequent iteration has a $\frac{n-3}{2} \times \frac{n-3}{2}$ dimension matrix, which can be approximated using the slightly larger $\frac{n}{2} \times \frac{n}{2}$.  This approximation allows us to calculate the number of probes by modeling it as a geometric sequence with $r = \frac{1}{2}$.
+The infinite sum of a geometric sequence is $\frac{a}{1 - r}$.  
+\begin{align*}
+\# \,Probes &= \frac{a}{1- r} \\
+ &= \frac{6 \cdot n}{1- 0.5} \\
+\# \, Probes &= \boxed{ 12 \cdot n \rightarrow O(n) }
+\end{align*}
+
+\noindent \textbf{Difficulty:}  8
+
+\noindent \textbf{Time:}  90 Minutes
+
+%\bibliographystyle{plain}
+\printbibliography
+
+
+\end{document}

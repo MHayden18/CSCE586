@@ -1,0 +1,160 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{multicol}
+\usepackage[skip=3pt]{caption}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{tabulary}
+\usepackage{times}
+\usepackage{datetime}
+\usepackage{titling}
+%\pagestyle{fancy}
+\usepackage[most]{tcolorbox}
+\usepackage[T1]{fontenc}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\tab}[1][1]{\noindent \hspace{#1cm} }
+
+\usepackage[style=numeric]{biblatex}
+\addbibresource{myreferences.bib}
+
+\begin{document}
+
+\noindent \textbf{CSCE 586 - Design and Analysis of Algorithms}
+
+\noindent \textbf{Date:}  \today 
+
+\noindent \textbf{Name:}  Micah Hayden
+
+\noindent \textbf{Assignment:}  Final Exam - Take Home Portion, Version A
+
+\noindent \textbf{Documentation:} 
+
+\hrulefill
+
+\section*{Problem 1 - Handout}
+\subsection*{Problem Statement:}  
+
+\subsection*{Description of Algorithm:}
+
+\begin{algorithm}
+\caption{Delete-Cycles($S$, $u$) }
+\begin{algorithmic}
+\State Push $u$ into $S$
+\State $V \gets V \cup u$ 
+\For {Vertices $v_i$ incident to $u$}
+	\If {$v \notin V$}
+		\State $Delete-Cycles(S, v)$
+	\Else {\textbf{ if} $v \in V \mathrm{ and } \, v \in S$}
+		\State Delete edge $u \rightarrow v$	
+	\EndIf
+\EndFor
+\State Pop $u$ from $S$
+\State \Return
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+
+\noindent \textbf{Best Case:}
+
+\noindent \textbf{Average Case:}
+
+\subsection*{Proof:}
+
+\newpage
+
+\section*{Chapter 5, Problem \#4}
+
+\subsection*{Problem Statement:}  
+
+\subsection*{Description of Algorithm:}
+
+\subsection*{Asymptotic Analysis:}
+
+\noindent \textbf{Worst Case:} \newline
+
+\noindent \textbf{Best Case:} \newline
+
+\noindent \textbf{Average Case:} \newline
+
+\subsection*{Proof:}
+
+\newpage
+
+\section*{Chapter 6, Problem \#9 }
+
+\subsection*{Problem Statement:}  
+
+\subsection*{Description of Algorithm:}
+
+
+\begin{algorithm}[h!]
+\caption{Pseudocode of Algorithm:}
+\begin{algorithmic}
+\For {$j = 1 \rightarrow n$}
+	\State $OPT(n, j) \gets min(x_n, s_j)$
+\EndFor
+\For {$i = n-1 \rightarrow 1$}
+	\For {$j = 1 \rightarrow i$}
+		\State $OPT(i, j) = max[ OPT(i+1, 1), min(x_i, s_j) + OPT(i+1, j+1)]$
+	\EndFor
+\EndFor
+\State \Return $OPT(1, 1)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+
+\noindent \textbf{Best Case:}
+
+\noindent \textbf{Average Case:}
+
+\subsection*{Proof:}
+
+\newpage
+
+\section*{Chapter 6, Problem \#12}
+
+\subsection*{Problem Statement:}  
+
+\subsection*{Description of Algorithm:}
+
+\begin{algorithm}
+\caption{Dynamic Programming for Minimum Server Cost}
+\begin{algorithmic}
+\State Let $OPT(0) = 0$ and $\binom{1}{2} = 0$
+\For {$ 1 \leq j \leq (n-1)$}
+	\State $OPT(j) \gets c_j + min_{0 \leq i < j}(OPT(i) + \binom{j-i}{2} )$
+\EndFor
+\State $OPT(n) = OPT(n-1) + c_n$.
+\State \Return $OPT(n)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+
+\noindent \textbf{Best Case:}
+
+\noindent \textbf{Average Case:}
+
+\subsection*{Proof:}
+
+\printbibliography
+
+\end{document}

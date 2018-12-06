@@ -1,0 +1,261 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{multicol}
+\usepackage[skip=3pt]{caption}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{tabulary}
+\usepackage{times}
+\usepackage{titling}
+\usepackage{datetime}
+%\pagestyle{fancy}
+\usepackage[most]{tcolorbox}
+
+\usepackage[T1]{fontenc}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\newcommand{\tab}[1][1]{\noindent \hspace{#1cm} }
+
+\usepackage{natbib}
+
+\begin{document}
+\noindent \textbf{CSCE 586 - Design and Analysis of Algorithms}
+
+\noindent \textbf{Date:}  \today 
+
+\noindent \textbf{Name:}  Micah Hayden
+
+\noindent \textbf{Assignment:}  Homework \#2
+
+\noindent \textbf{Documentation:} 2Lt Mireles and I discussed how to determine the run time of Ch. 4 \#4, as well as discussed the similarities between Ch. 4 \#19 and a MST algorithm.  I utilized the textbook as well as the chapter slides to generate my algorithm for Ch. 4 \#19.  
+
+\hrulefill
+
+\section*{Chapter 3, Problem \#5}
+\subsection*{Problem Statement:}  A binary tree is a rooted tree in which each node has at most two children.  Show by induction that in any binary tree, the number of nodes with two children is exactly one less than the number of leaves.
+
+\subsection*{Inductive Proof:}
+Let $n$ be the number of nodes in a tree, $s$ be the number of leaves, and $p$ be the number of nodes with two children.
+
+\noindent \textbf{Prove:} $ p \, = s - 1 $ for a binary tree.
+
+\noindent \textbf{Base Case: $n \, = \, 1$}
+
+If $n = 1$, there is a single node, which is a leaf.  It has no parent nodes.  Thus, $s = 1$, $p = 0$
+
+\begin{align*}
+&p = s - 1 \\
+&0 = 1 - 1\\
+&0 = 0
+\end{align*}
+
+\noindent \textbf{Inductive Hypothesis:}
+$ p = s - 1 $ for $ n \geq 1 $
+
+\noindent \textbf{Inductive Step:}
+Let us consider the insertion of a new node $x$.  After insertion, $x$ has parent node $y$.
+Because a node in a binary tree can have at most 2 children, there are only two cases for $y$ before inserting $x$.
+\begin{enumerate}
+	\item $y$ has no children
+	\item $y$ has one child
+\end{enumerate}
+
+\noindent Let $s$ and $p$ be the number of leaves, and the number of parent nodes with two children, respectively.  Similarly, let $s'$ and $p'$ be the number of leaves and parent nodes with two children after the insertion of $x$.
+
+\textbf{Case \#1:} $y$ has no children. \newline
+By definition, $y$ is a leaf node. $x$ is then inserted as a new leaf, and $y$ becomes a node with one child.  Thus, $p' = p$, and $s' = s + (1 - 1) = s$.
+Thus, anytime a node is inserted to a leaf node, $$p' = s' - 1 \rightarrow p = s - 1 $$ 
+
+\textbf{Case \#2:} $y$ has one child \newline
+$y$'s child is a leaf node.  $x$ is inserted as a leaf, thus $s' = s + 1$.
+Because $y$ had one child prior to $x$, after $x$ is inserted, $y$ has two children.  Thus, $p' = p + 1$.
+\begin{align*}
+p' &= s' - 1 \\
+(p + 1) &= (s + 1) - 1 \\
+p &= s - 1
+\end{align*} 
+
+\noindent The theorem is proved by induction because any time a node is inserted, the statement $p = s - 1$ holds true.  Because the statement is true for $n=1$, it will remain true for any $n' = n+1$.
+
+\noindent \textbf{Difficulty:}  3
+
+\noindent \textbf{Time:}  30 Minutes
+
+\newpage
+\section*{Chapter 4, Problem \# 4}
+\subsection*{Problem Statement:}
+Develop an algorithm that takes two sequences of events - $S'$ of length $m$ and $S$ of length $n$, each possibly containing an event more than once, and decides in time $O(m+n)$ whether $S'$ is a subsequence of $S$.
+
+\subsection*{Description of Algorithm:}
+This algorithm will loop through the items in $S$ and determine whether $S'$ is a subsequence of $S$.
+$S$ and $S'$ are implemented as two queues, with $\mid S \mid = n$ and $\mid S' \mid = m$.
+
+The algorithm is as follows:
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Subsequence Determination} % give the algorithm a caption
+%\label{alg1} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let queues $A$ and $B$ represent $S'$ and $S$, respectively
+	\While {$ A \neq \{\}$ and $B \neq \{\}$}:
+		\State $ A' = \, front[A] $
+		\State $ B' = \, dequeue[B] $
+    	\If {$A' = B'$}:
+    		\State $A'$ has occurred in $B$
+    		\State $dequeue[A]$
+    		\Comment This removes $A'$ from queue $A$
+    	\Else
+    		\State $A'$ has not occurred not in $B$
+    	\EndIf
+	\EndWhile  
+	\If {$ A = \{\}$ }:
+		\State $S'$ is a subsequence of $S$
+	\Else :
+		\State $S'$ is not a subsequence of $S$.
+	\EndIf  
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+
+\noindent The worst case scenario would be when the algorithm exits the while loop after $n$ iterations, discovering either that $S'$ is a subsequence, sharing the final event with $S$; or that $S'$ is not a subsequence of $S$.
+
+\noindent The while loop terminates in \textbf{at most} $n$ loops because $n \geq m$.
+All other operations occur in constant time.  Thus, the total run time of the algorithm is $O(n)$.
+
+\noindent \textbf{Best Case:}
+
+\noindent The best case would occur when $S'$ represents the first $m$ events of set $S$.
+This would have a run time of $\Omega(m)$
+
+\noindent \textbf{Average Case:}
+
+\noindent In this particular algorithm, the average case would occur when there is a repetition in $S$ for each event $m$ in $S'$, it would terminate after $2 \cdot m$ iterations.  This would indicate that the algorithm discovered that $S'$ was a subsequence of $S$ with the following run-time:  $O(2 \cdot m)= O(m)$. \newline
+
+\noindent \textbf{Note:}  The problem statement requested an algorithm of run-time $O(m + n)$.  That asymptotic growth is linear and can be achieved with the algorithm I have presented if one simply changes the input model (For example: chronologically reverse the items in $S'$ and $S$ and utilize a stack, popping items $A'$ and $B'$ for the comparison, and pushing $A'$ onto stack $A$ if $A' \neq B'$.
+Reversing $S$ and $S'$ occurs in $m$ and $n$ operations, respectively; and the algorithm will terminate after at most $m$ loops.
+
+\begin{align*}
+&= O( \, (m \, + \, n) \, + \, m \\
+&= O( 2 \cdot m \, + \, n) \\
+&= \boxed{ O(m + n)}
+\end{align*}
+
+\noindent This realization would satisfy the requirements of the problem, yet the method presented is a more efficient realization because it does not require sorting.
+
+\subsection*{Proof:}
+Let there be two sequences $S'$ and $S$, of lengths $m$ and $n$, respectively, such that $m \leq n$.
+Let there be a queue $A$ representing $S'$, a queue $B$ representing $S$, and $A'$ representing the first event of $A$.
+The events in the queues represent the chronological ordering of events in $S'$ and $S$, when an event is dequeued from the queue, that event has occurred.
+
+\tab - If $A'$ does not match the event dequeued from $B$, $A'$ is not dequeued from $A$.
+
+\tab - Thus, the events in $A$ can only be processed in order, regardless of repetition of events.
+
+\tab - Upon termination:  if $A$ is empty, all events $A$ matched, in order, corresponding events in $B$.
+
+\tab - If $A$ is not empty, some event $A'$ (or events), were not found in order.
+
+\hrulefill
+
+\noindent By selecting the queue data structure, this algorithm's function is incredibly clear:  there is no way to process the events in $A$ out of order, and the algorithm terminates when either $A$ or $B$ is empty. \newline
+
+\noindent \textbf{Difficulty:}  5
+
+\noindent \textbf{Time:}  30 Minutes
+
+\newpage
+\section*{Chapter 4, Problem \# 19}
+\subsection*{Problem Statement:}
+Develop an algorithm constructing a spanning tree $T$ in which, for each $u$, $v \in V$, the bottleneck rate of the $u-v$ path in $T$ is equal to the best achievable bottleneck rate for the pair $u$, $v$ in $G$.
+
+The bottleneck rate $b(p)$ is the minimum bandwidth of any edge on $P$.   Thus, the goal is to maximize the bandwidth of the edges (one could think of this as a maximum-spanning tree).
+
+\subsection*{Description of Algorithm:}
+Because the goal of this algorithm is to maximize the bandwidth, the weight of edge $e \in E$ is $w_e = \frac{1}{b_e}$.  Thus, the edges of the minimum weight have the maximum bandwidth, and then a Minimum Spanning Tree (MST) algorithm can be used.
+
+I will utilize Kruskal's algorithm.  Kruskal's algorithm begins with the set of edges $E$, and inserts these edges in order of increasing cost.  Each edge $e$ is added in this order, as long as it does not create a cycle.  If $e$ creates a cycle, it is discarded and the algorithm moves on. Through the definition of cost (weight), increasing cost equals decreasing bandwidth. 
+
+This algorithm will utilize the pointer-based implmementation of the \textbf{Union-Find} data structure, which supports the following three applications \cite{algDesign}
+\begin{enumerate}
+	\item \textbf{MakeUnionFind($S$)} for a set $S$ will return a \textbf{Union-Find} data structure on set $S$ where all elements are in separate sets.
+	\item \textbf{Find($u$)} will return the name of the set containing $u$ for an element $u \in S$
+	\item \textbf{Union($A$, $B$)} will change the data structure by merging sets $A$ and $B$ into a single set
+\end{enumerate}
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Maximizing Bandwidth with Kruskal's Algorithm} % give the algorithm a caption
+\begin{algorithmic} % enter the algorithmic environment
+   \State SORT $m$ edges by weight so that $c_{e_1} \leq c_{e_2} \leq ... \leq c_{e_m}$
+   \State $T \gets \emptyset$
+   \ForEach { $v \in V:$ } 
+   		\State MAKE-SET($v$)
+   \EndFor
+   \For {$i = 1 \mathbf{\, to \,} m$}
+   		\State $(u, \, v) \gets e_i$
+   		\If {FIND-SET($u$) $\neq$ FIND-SET($v$)} 
+   			\State $T \gets T \cup {e_i} $
+   			\State UNION$(u, \, v)$ 
+   		\EndIf
+   \EndFor
+   \State \textbf{Return $T$ }
+   
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Asymptotic Analysis:}
+\noindent \textbf{Worst Case:}
+The \textbf{Union-Find} data structure for set $S$, where $\mid S \mid = n$, where unions join the larger of two sets occur in the following times \citep{algDesign}:
+\begin{enumerate}
+	\item Find:  $O(\log{n})$
+	\item MakeUnionFind($S$):  $O(n)$
+	\item Union:  $O(1)$
+\end{enumerate}
+
+Sorting our $m$ edges takes $\log{m}$ operations.  MakeUnionFind will take $n$ operations, where $n$ represents the number of vertexes.  We will then go through at most $m$ iterations.  Each iteration has two Find operations and a Union operation.  Because each edge $e$ has two end points, $n > m$.  Thus, the worst-case asymptotic growth is:
+\begin{align*}
+&= O(\log{m} + n + m \cdot \log{n} ) \\
+&= O(\log{n} + n + n \cdot \log{n} ) \\
+&= O(n \cdot \log{n} )
+\end{align*}
+
+\noindent \textbf{Best Case:}
+Let there be a connected graph $G$ with $m$ edges, its MST has $m'$ edges and $n$ vertexes.  It follows that $m' = n-1$.  The best case scenario for this algorithm would occur if the first $m'$ edges considered by the algorithm, were the edges of the MST.
+This would allow the algorithm to occur in:
+\begin{align*}
+&= \Omega( \log{m} + m' \cdot \log{n} ) \\
+&= \Omega( (n - 1) \cdot \log{n} ) \\
+&= \Omega( n \cdot \log{n} ) 
+\end{align*}
+
+\noindent \textbf{Note:}  Because the function is both $O(n \cdot \log{n} )$ and $\Omega (n \cdot \log{n} )$, it is a strict bound.  Thus, the algorithm is $\Theta (n \cdot \log{n})$. \newline
+
+\noindent \textbf{Average Case:}
+The average run-time for this algorithm would occur when for each successful edge, there was an edge which was discarded/not in the MST.  This would still lead to a run-time of $O(n \cdot \log{n})$ due to the strict asymptotic bounds:  the edges still need to be sorted, and each vertex needs to be reached.
+
+\subsection*{Proof:}
+\textbf{Kruskal's Algorithm produces a minimum spanning tree of $G$:}
+Consider an edge $e \, = \, (v, \, w)$ added by Kruskal's Algorithm.  To be considered, $v \in S$ and $w \notin S$, otherwise $e$ would create a cycle in $S$.
+Similarly, edges from $S$ to $V-S$ have been considered yet, otherwise they would have been added without creating a cycle.  Thus, $e$ is the cheapest edge with one end in $S$ and another in $V-S$.  This concludes that $e$ must belong to every minimum spanning tree. \cite{algDesign}
+
+\noindent Let $(V, \, T)$ be the output of Kruskal's Algorithm.  $(V, \, T)$ contains no cycles because the algorithm explicitly refuses cycles.  If $(V, \, T)$ was not connected, there would exist some set $S' \subset V$ with no edge $e'$ from $S'$ to $V- S'$.  This contradicts the behavior of the algorithm because we know that $G$ is connected, and thus there exists at least one edge between $S$ and $V-S$.  The algorithm would have added the first such edge that it encountered. \cite{algDesign} \newline
+
+\noindent \textbf{Difficulty:}  5
+
+\noindent \textbf{Time:}  60 Minutes
+
+\bibliographystyle{plain}
+\bibliography{myreferences}
+
+\end{document}

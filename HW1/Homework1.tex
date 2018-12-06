@@ -1,0 +1,225 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{multicol}
+\usepackage[skip=3pt]{caption}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{tabulary}
+\usepackage{times}
+\usepackage{titling}
+\usepackage{datetime}
+%\pagestyle{fancy}
+\usepackage[most]{tcolorbox}
+
+\usepackage[T1]{fontenc}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\setlength{\droptitle}{-2.5cm}
+
+%\title{CSCE 586 - DESIGN AND ANALYSIS OF ALGORITHMS}
+%\author{Homework \#1 \\ Name:  Micah \textsc{Hayden} \\ Documentation: None}
+%\date{\today}
+
+\newcommand{\tab}[1][1]{\noindent \hspace{#1cm} }
+
+\begin{document}
+\noindent \textbf{CSCE 586 - Design and Analysis of Algorithms}
+
+\noindent \textbf{Date:  \today }
+
+\noindent \textbf{Name:  Micah Hayden}
+
+\noindent \textbf{Documentation:} I utilized stack overflow for information on some LaTeX syntax.  I used the Desmos online graphing calculator to visualize the six functions for Chapter 2 Problem \#3.
+I discussed the different ways of assigning the priority lists to the port/ship problem with 2Lt Mireles.
+
+\hrulefill
+
+\section*{Chapter 1, Problem \#4}
+\subsection*{Problem Statement:}  Develop an algorithm to assign at most \textit{n} students to \textit{m} hospitals where each hospital has $\geq 1$ students.  
+
+\subsection*{Description of Algorithm:}
+	This algorithm utilizes the standard Gale-Shapley algorithm with two small differences:  it uses a set of hospital slots as opposed to a set of hospitals; and it terminates without regard to whether or not all students are matched (if there are fewer slots than students, not all students will have a matching hospital)
+
+%\begin{tcolorbox}[width=\textwidth,enhanced,interior style={top color={lightgray},bottom color={lightgray}}]
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Stable Matching Algorithm with multiple students per hospital} % give the algorithm a caption
+%\label{alg1} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let \textit{M} be the set of hospital slots
+    \State Let \textit{N} be the set of available students. 
+	\State Initially, all $m \in M$ and $n \in N$ are free.
+    \While {there is a hospital slot \textit{m} free}:
+    	\State Choose the first hospital slot \textit{m} in \textit{M}
+    	\State Let \textit{n} be the highest preferred student on \textit{m's} list.
+    	\If {\textit{n} is free}:
+    		\State Match (m, n)
+    	\Else
+    		\Comment \textit{n} is currently matched with \textit{m'}
+    		\If {\textit{n} prefers \textit{m} to \textit{m'}}:
+    			\State (m, n) become matched
+    			\State \textit{m'} becomes free
+    		\Else
+    			 \State \textit{m} remains free.
+    		\EndIf
+    	\EndIf
+	\EndWhile    
+\end{algorithmic}
+\end{algorithm}
+
+%\end{tcolorbox}
+\noindent This algorithm terminates once all hospital slots are filled (when there are no hospital slots \textit{m} free), and does not care if there are unassigned students remaining.  This solves the case in which $ n \geq m$.
+
+\subsection*{Asymptotic Analysis:}
+There are \textit{m} hospital slots available, and for each slot there are \textit{n} students available to extend an offer to.  There are at most $m \cdot n$ selections to attempt:  n for m1, n for m2, etc. until the final hospital slot.  Every other operation can occur in constant time.  Thus, this algorithm will execute in $O(m \cdot n)$.
+
+\subsection*{Proof:}
+\textbf{Instability \#1:}  there are students s and s', and a hospital h such that:
+
+	\tab - s is assigned to h 
+	
+	\tab - s' is free
+	
+	\tab - h prefers s' to s
+
+\noindent Because \textit{h} prefers \textit{s'} to \textit{s}, \textit{h} must have offered \textit{s'} first.  \textit{s'} must accept because \textit{s'} is free.
+
+\noindent \textbf{Instability \#2:}  There are students s and s', and hospitals h and h' such that:
+
+	\tab - s is assigned to h 
+	
+	\tab - s' is assigned to h' 
+	
+	\tab - h prefers s' to s
+	
+	\tab - s' prefers h to h'
+	
+\begin{algorithm}
+\begin{algorithmic}
+	\State Because h prefers s' to s, h would have offered a spot to s' first.
+	\If {s' was free} 
+		\State h and s' would be matched.
+	\EndIf
+	\If {s' was matched with h'} 
+		\State s' would break with h' and accept its preferred school h.
+		\State h' then becomes free, extending an offer to its next highest student, s.
+		\State s accepts the invitation because it was free.
+	\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Difficulty and Time:}
+I would rate this problem as a difficulty 3, it followed the main G-S algorithm with only small modifications.  I spent about 30 minutes between solving and presenting the problem.
+
+\newpage
+\section*{Chapter 1, Problem \#6}
+\subsection*{Problem Statement:}  Given the schedule for each ship $s \in S$, that visits each port $p \in P$, find a truncation of each so that condition ($\dag$) continues to hold:  no two ships are ever in the same port on the same day.  Show that such a set of truncations can always be found, and give an algorithm to find them.
+
+
+\subsection*{Description of Algorithm:}
+	This algorithm utilizes the standard Gale-Shapley algorithm with two sets of priority lists.  Each ship \textit{s} prioritizes the ports in chronological order.  Each port \textit{p} prioritizes the ships in reverse-chronological order.  A ship will propose to the first port it visits, after which the port will "trade up" to ships that appear later.  If the ship is rejected or the port trades the ship away, the ship will then propose to its next destination.  Thus, there will never be an occurrence where two ships are at the same port.
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Stable Matching Algorithm for Ship Route Truncation} % give the algorithm a caption
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let \textit{S} be the set of ships
+    \State Let \textit{P} be the set of ports. 
+	\State Initially, all $s \in S$ and $p \in P$ are free.
+	\State $s$ prioritizes ports $p$ in chronological order
+	\State $p$ prioritizes ships $s$ in reverse-chronological order
+    \While {there is a ship $s$ without an assigned stopping port \textit{p} }:
+    	\State Let \textit{p} be the highest preferred port on \textit{s's} list.
+    	\If {\textit{p} is free}:
+    		\State Match ($s$, $p$)
+    	\Else
+    		\Comment \textit{p} is currently matched with \textit{s'}
+    		\If {\textit{p} prefers \textit{s} to \textit{s'}}:
+    			\State ($s$, $p$) become matched
+    			\State \textit{s'} becomes free
+    		\Else
+    			 \State \textit{s} remains free.
+    		\EndIf
+    	\EndIf
+	\EndWhile    
+\end{algorithmic}
+\end{algorithm}
+
+\noindent This algorithm will terminate once all ships $s$ have a matching port $p$ at which to stop.
+
+\subsection*{Asymptotic Analysis:}
+Similarly to problem 4, there is a loop of all the ships, $s$, which can consider at most each port $p$.  Thus, there are a total of $s \cdot p$ combinations.  Because all other operations can occur in constant time, this algorithm executes in $O(s \cdot p)$.
+
+\subsection*{Proof:}
+\noindent \textbf{Completion:}  To end, each ship must be matched to a port; each port can have a most one ship assigned to it.
+
+\noindent \textbf{Incompatibility \#1:}  $\dag$ is violated, 2 ships are in the same port $p$ at once.  This can only occur if a ship truncates its path, and another continues due to the original scheduling constraints.
+
+Assume $s$ is paired with port $p$.
+
+\tab - $s'$ has not found a match, thus it proposes to $p$.  
+
+\tab - Because $s'$ would arrive later than $s$, $p$ prefers $s'$ to $s$.
+
+\tab - Thus, $s$ would not stop at $p$  because it would have been freed.
+
+The reverse-ordering of the ports solves the incompatibility:  each port will accept the latest ship to arrive, respectively.  Each ship will either stop, and is the last to arrive at its stopping point; or it will propose to a future destination.
+
+\subsection*{Difficulty and Time:}
+I would rate this problem as a difficulty 7, it followed the main G-S algorithm with only small modifications.  The main cognitive shift was figuring out the prioritization of the list of ships and ports.  I spent about 45 minutes, the majority of which was spent on finding how to prove that the algorithm does not violate the condition $\dag$.
+
+\newpage
+\section*{Chapter 2, Problem \# 3}
+\subsection*{Problem Statement:}
+Arrange the list of functions in ascending order of growth rate.  That is, if $g(n)$ follows $f(n)$, then $f(n)$ should be $O(g(n))$.
+\begin{align*}
+&f_1(n) = n^{2.5} \\
+&f_2(n) = \sqrt{2 \cdot n} \\
+&f_3(n) = n + 10 \\
+&f_4(n) = 10^n \\
+&f_5(n) = 100^n \\
+&f_6(n) = n^2 \cdot \log{n}
+\end{align*}
+
+\subsection*{Solution:}
+The first step in this solution is to inspect the functions to see their rough growth rate.
+Functions 1-3 all grow in polynomial time, $f(n) = n^x$ where $x = 2.5,\, 0.5, \,\mathrm{and} \, 1$, respectively; functions 4-5 grow in exponential time, $f(n) = x^n$, with $n = 10 \,\mathrm{and} \, 100$, respectively; and function 6 has polynomial and logarithmic elements.
+
+\noindent The slowest growth rate of these functions are those with polynomial growth, and the fastest growth rate is exponential.  Finally, function 6 needs to be compared to the polynomial functions because of its polynomial term.  
+\newline
+
+\noindent\textbf{Polynomial Comparisons:}
+\newline \tab $f_2(n)$ and $f_3(n)$ are both $O(f_1(n))$ because $\sqrt{n} \leq n^1 \leq n^{2.5}$ for $n \geq 1$
+\newline \tab $f_2(n) \mathrm{\,is\,}O( f_3(n))$ because $n^{0.5} \leq n^1$ for all $n \geq 1$
+\newline \tab $f_2(n) \mathrm{\,is\,} O( f_6(n))$ because $n^{0.5} \leq n^2$ for all $n \geq 1$. 
+\newline \tab $f_3(n) \mathrm{\,is\,} O( f_6(n))$ because $n \leq n^2$ for all $n \geq 1$.  
+\newline \newline To compare $f_1(n)$ and $f_6(n)$, divide both functions by $n^2$.  We are left with $f_1(n) = n^{0.5}$, and $f_6(n) = \log{n}$.  $\log{n} \leq n^{0.5}$ for all $n \geq 0$.  Thus, $f_6(n) \mathrm{\,is\,} O( f_1(n))$.
+
+\noindent These can be ordered as follows:  $f_2(n), f_3(n), f_6(n), f_1(n)$.
+\newline
+
+\noindent \textbf{Exponential Comparison:}
+$f_4(n) \leq f_5(n)$ for all $n \geq 0$.
+\newline
+
+\noindent \textbf{Final Ordering:}
+\newline
+\begin{align*}
+&f_2(n) = \sqrt{2 \cdot n} \\
+&f_3(n) = n + 10 \\
+&f_6(n) = n^2 \cdot \log{n} \\
+&f_1(n) = n^{2.5} \\
+&f_4(n) = 10^n \\
+&f_5(n) = 100^n
+\end{align*}
+ 
+\subsection*{Difficulty and Time:}
+I would rate this as a difficulty of 1.  The functions can be ordered relatively simply, with the main challenge being writing it in an adequate form.  I spent roughly 15 minutes on this problem.
+
+\end{document}

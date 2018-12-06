@@ -1,0 +1,15 @@
+[0] Config.pm:302> INFO - This is Biber 2.11
+[0] Config.pm:305> INFO - Logfile is 'Homework3.blg'
+[36] biber-MSWIN64:313> INFO - === 
+[76] Biber.pm:371> INFO - Reading 'Homework3.bcf'
+[207] Biber.pm:857> INFO - Found 3 citekeys in bib section 0
+[234] Biber.pm:3976> INFO - Processing section 0
+[250] Biber.pm:4136> INFO - Looking for bibtex format file 'myreferences.bib' for section 0
+[254] bibtex.pm:1500> INFO - LaTeX decoding ...
+[273] bibtex.pm:1316> INFO - Found BibTeX data source 'myreferences.bib'
+[339] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[339] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[340] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[340] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
+[348] bbl.pm:617> INFO - Writing 'Homework3.bbl' with encoding 'UTF-8'
+[350] bbl.pm:720> INFO - Output to Homework3.bbl

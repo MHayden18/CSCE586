@@ -1,0 +1,84 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{multicol}
+\usepackage[skip=3pt]{caption}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{tabulary}
+\usepackage{times}
+\usepackage{titling}
+\usepackage{datetime}
+%\pagestyle{fancy}
+\usepackage[most]{tcolorbox}
+
+\usepackage[T1]{fontenc}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\setlength{\droptitle}{-2.5cm}
+
+%\title{CSCE 586 - DESIGN AND ANALYSIS OF ALGORITHMS}
+%\author{Homework \#1 \\ Name:  Micah \textsc{Hayden} \\ Documentation: None}
+%\date{\today}
+
+\newcommand{\tab}[1][1]{\noindent \hspace{#1cm} }
+
+\begin{document}
+\noindent \textbf{CSCE 586 - Design and Analysis of Algorithms}
+
+\noindent \textbf{Date:  \today }
+
+\hrulefill
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Pseudocode of Huffman Algorithm [1]} % give the algorithm a caption
+%\label{alg1} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State To construct a prefix code for an alphabet $S$, with given frequencies:
+    \If {$S$ has two letters} :
+    	\State Encode one letter using 0 and the other using 1.
+    \Else {:}
+    	\State Let $y*$ and $z*$ be the two lowest frequency letters
+    	\State Form a new alphabet $S'$ by deleting $y*$ and $z*$ and replacing them with a new letter $w$ of frequency $f_{y*} + f_{z*}$
+    	\State Recursively construct a prefix code $\gamma '$ for $S'$, with tree $T'$.
+    	\State Define a prefix code for $S$ as follows:
+    	\State \tab Start with $T'$
+    	\State \tab Take the leaf labeled $w$ and add two children below it labeled $y*$ and $z*$ 
+    \EndIf 
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Proof of Termination} % give the algorithm a caption
+%\label{alg1} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let \textit{S} be an alphabet, with given frequencies
+    \State Combine the two lowest frequency letters \textit{x} and \textit{y} into a meta-letter \textit{z}.
+    \State Let \textit{S'} be the updated alphabet containing \textit{z}.  
+    \State $\mid S' \mid = \mid S \mid - 1$  
+    \State Each iteration produces an alphabet with 1 fewer letter than before; thus the algorithm will terminate when there are only two letters $\qedhere$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{equation}
+ABL(\gamma) = \sum_{x \in S}^{n} f_x \mid \gamma(x) \mid
+\end{equation}
+
+\begin{algorithm} % enter the algorithm environment
+\caption{Proof of Optimality, by contradiction} % give the algorithm a caption
+%\label{alg1} % and a label for \ref{} commands later in the document
+\begin{algorithmic} % enter the algorithmic environment
+    \State Let \textit{S} be the alphabet {x, y, z}, with given frequencies such that
+    \State \tab $f(z) < f(x) < f(y)$ and $ Depth(x) < Depth(y) = Depth(z) $
+    \State Let \textit{a} denote the meta-letter {\textit{x, y}}.
+    \State Prior to the formation of $a$: \textit{x, y, and z} are all leaves.  Thus, $a$ would select the lowest two frequency letters.  Because $f(x) < f(y)$, $a$ would select $x$, not $y$, a contradiction.
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}
