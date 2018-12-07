@@ -44,116 +44,88 @@
 
 \hrulefill
 
-\section*{Problem 1 - Handout}
-\subsection*{Problem Statement:}  
+\section{Hidden Surface Removal Problem:}
+\subsection{Which algorithmic paradigm will you use to solve this problem?}  
+I will utilize Divide-and-Conquer to solve this problem.
 
-\subsection*{Description of Algorithm:}
+\subsection{Why did you chose the algorithmic paradigm selected above to solve this problem?}
+I believe this paradigm is suited to divide and conquer.  Each line has similar characteristics, following the same equation $y_i = a_i \cdot x + b_i$.  The problem can be divided into small, independent sub-problems using the slope of each line.  The base case occurs when $n \leq 3$:  because no 3 lines intersect at a single point, the resulting "uppermost" lines can be found in constant time.
+ 
+\subsection{Give an algorithm that takes $n$ lines as input, and in $O(n \log{n})$ time returns all of the lines that are visible.  Provide a clear description of the algorithm.}
+
+Let $L$ be a set of lines, $|L|=n$, where $L_i=m_i \cdot x + b_i$.
 
 \begin{algorithm}
-\caption{Delete-Cycles($S$, $u$) }
+\caption{Hidden-Surface-Removal:  HSR($L$)}
 \begin{algorithmic}
-\State Push $u$ into $S$
-\State $V \gets V \cup u$ 
-\For {Vertices $v_i$ incident to $u$}
-	\If {$v \notin V$}
-		\State $Delete-Cycles(S, v)$
-	\Else {\textbf{ if} $v \in V \mathrm{ and } \, v \in S$}
-		\State Delete edge $u \rightarrow v$	
+\State Sort $L$ by ascending slope, such that $L_i$ has slope $m_i$ and $m_i < m_{i+1}$ for all $i$.
+\State $|L| = n$
+\If {$n \leq 2$}
+	\State \Return The set of lines $L$, and their intersection $a$.
+\ElsIf {$n = 3$}
+	\State Let $a =$ the intersection of $L_1$ and $L_3$
+	\State Let $b =$ the intersection of $L_1$ and $L_2$
+	\If {$x_b < x_a$}
+		\State Let $c =$ the intersection of $L_2$ and $L_3$.
+		\State \Return $L$ and $\{b, c\}$
+	\Else 
+		\State \Return $L - \{L_2\}$ and $\{a\}$
 	\EndIf
-\EndFor
-\State Pop $u$ from $S$
-\State \Return
+\Else
+	\State $L, A = HSR(\{L_1, \dots , L_{\frac{n}{2}}\})$
+	\State $L', B = HSR(\{L_{\frac{n}{2}+1}, \dots , L_n\})$
+\EndIf
+\State Merge $A$ and $B$ into $C$ by increasing $x$ coordinate
+\State Find the first element in $C$ for which $L' > L$, denote this element as $c_k$.
+\State Let $L_i \in L$ be the uppermost line in $L$ immediately before $c_k$.
+\State Let $L_j \in L'$ be the uppermost line in $L'$ immediately after $c_k$.
+\State Let point $p_{int}$ be the intersection of lines $L_i$ and $L_j$.
+\State $L = \{L_1, L_2, \dots, L_i\} \cup \{L'_j, L'_{j+1}, \dots L_n \}$
+\State $C = \{A_1, \dots A_{i-1} \} \cup p_{int} \cup \{B_j, \dots B_{n-1} \}$
+\State \Return $L$ and $C$
 \end{algorithmic}
 \end{algorithm}
 
-\subsection*{Asymptotic Analysis:}
+\subsection{Perform asymptotic analysis of your algorithm's running time.  Also, consider the run time performance of a best case, worst case, and average case input model scenario.}
+
 \noindent \textbf{Worst Case:}
 
 \noindent \textbf{Best Case:}
 
 \noindent \textbf{Average Case:}
 
-\subsection*{Proof:}
+\subsection{Provide a proof that your algorithm works correctly:}
 
 \newpage
 
-\section*{Chapter 5, Problem \#4}
+\section{Bipartite Matching Problem}
 
-\subsection*{Problem Statement:}  
+\subsection{Which algorithmic paradigm best describes this algorithm?}  
 
-\subsection*{Description of Algorithm:}
+\subsection{Why did you choose the algorithmic paradigm selected above?}
 
-\subsection*{Asymptotic Analysis:}
+\subsection{Give an example of a bipartite graph $G$ for which this algorithm does not return the maximum matching.}
 
-\noindent \textbf{Worst Case:} \newline
+\subsection{Let $M$ and $M'$ be matchings in a bipartite graph $G$.  Suppose that $|M'| > 2 \cdot |M|.$  Show that there is an edge $e' \in M'$ such that $M \cup {e'}$ is a matching in $G$.}
 
-\noindent \textbf{Best Case:} \newline
+\subsection{Using the previous claim (and your supporting proof) to further prove that the algorithm is optimal or that the algorithm is $\rho$-optimal approximate (in this case be sure to derive the value of $\rho$ as part of your proof).}
 
-\noindent \textbf{Average Case:} \newline
-
-\subsection*{Proof:}
 
 \newpage
 
-\section*{Chapter 6, Problem \#9 }
+\section{Number Partitioning Problem}
 
-\subsection*{Problem Statement:}  
+\subsection{Problem Statement:}  
+Show that the \textit{Number Partitioning} is NP-complete using the \textit{Subset Sum} problem.
 
-\subsection*{Description of Algorithm:}
+\subsection*{Show \textit{Number Partitioning} $\in$ NP}
+Let $Y = Number \, Partitioning$
 
+\subsection*{Choose an NP-Complete problem $X$:}
+Let \textit{Subset Sum} be X.
 
-\begin{algorithm}[h!]
-\caption{Pseudocode of Algorithm:}
-\begin{algorithmic}
-\For {$j = 1 \rightarrow n$}
-	\State $OPT(n, j) \gets min(x_n, s_j)$
-\EndFor
-\For {$i = n-1 \rightarrow 1$}
-	\For {$j = 1 \rightarrow i$}
-		\State $OPT(i, j) = max[ OPT(i+1, 1), min(x_i, s_j) + OPT(i+1, j+1)]$
-	\EndFor
-\EndFor
-\State \Return $OPT(1, 1)$
-\end{algorithmic}
-\end{algorithm}
+\subsection*{Prove that $X \leq_P Y$}
 
-\subsection*{Asymptotic Analysis:}
-\noindent \textbf{Worst Case:}
-
-\noindent \textbf{Best Case:}
-
-\noindent \textbf{Average Case:}
-
-\subsection*{Proof:}
-
-\newpage
-
-\section*{Chapter 6, Problem \#12}
-
-\subsection*{Problem Statement:}  
-
-\subsection*{Description of Algorithm:}
-
-\begin{algorithm}
-\caption{Dynamic Programming for Minimum Server Cost}
-\begin{algorithmic}
-\State Let $OPT(0) = 0$ and $\binom{1}{2} = 0$
-\For {$ 1 \leq j \leq (n-1)$}
-	\State $OPT(j) \gets c_j + min_{0 \leq i < j}(OPT(i) + \binom{j-i}{2} )$
-\EndFor
-\State $OPT(n) = OPT(n-1) + c_n$.
-\State \Return $OPT(n)$
-\end{algorithmic}
-\end{algorithm}
-
-\subsection*{Asymptotic Analysis:}
-\noindent \textbf{Worst Case:}
-
-\noindent \textbf{Best Case:}
-
-\noindent \textbf{Average Case:}
-
-\subsection*{Proof:}
 
 \printbibliography
 
