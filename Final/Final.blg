@@ -1,15 +1,15 @@
 [0] Config.pm:302> INFO - This is Biber 2.11
-[1] Config.pm:305> INFO - Logfile is 'Final.blg'
-[33] biber-MSWIN64:313> INFO - === 
-[66] Biber.pm:371> INFO - Reading 'Final.bcf'
-[167] Biber.pm:857> INFO - Found 1 citekeys in bib section 0
-[182] Biber.pm:3976> INFO - Processing section 0
-[198] Biber.pm:4136> INFO - Looking for bibtex format file 'myreferences.bib' for section 0
-[201] bibtex.pm:1500> INFO - LaTeX decoding ...
-[207] bibtex.pm:1316> INFO - Found BibTeX data source 'myreferences.bib'
-[254] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[254] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[255] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[255] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
-[256] bbl.pm:617> INFO - Writing 'Final.bbl' with encoding 'UTF-8'
-[257] bbl.pm:720> INFO - Output to Final.bbl
+[0] Config.pm:305> INFO - Logfile is 'Final.blg'
+[44] biber-MSWIN64:313> INFO - === 
+[83] Biber.pm:371> INFO - Reading 'Final.bcf'
+[198] Biber.pm:857> INFO - Found 2 citekeys in bib section 0
+[218] Biber.pm:3976> INFO - Processing section 0
+[234] Biber.pm:4136> INFO - Looking for bibtex format file 'myreferences.bib' for section 0
+[239] bibtex.pm:1500> INFO - LaTeX decoding ...
+[248] bibtex.pm:1316> INFO - Found BibTeX data source 'myreferences.bib'
+[294] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[294] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[295] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[295] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
+[303] bbl.pm:617> INFO - Writing 'Final.bbl' with encoding 'UTF-8'
+[304] bbl.pm:720> INFO - Output to Final.bbl

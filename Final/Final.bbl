@@ -19,6 +19,18 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{Git}{misc}{}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{labeltitlesource}{title}
+      \field{title}{CS-180 Algorithm Design}
+      \verb{urlraw}
+      \verb https://github.com/weimin/CS-180
+      \endverb
+      \verb{url}
+      \verb https://github.com/weimin/CS-180
+      \endverb
+    \endentry
     \entry{algDesign}{book}{}
       \name{author}{2}{}{%
         {{hash=e405ae3c720db1b0e447ff5b601b968f}{%

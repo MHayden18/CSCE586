@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2018.10.9)  7 DEC 2018 20:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2018.10.9)  7 DEC 2018 20:40
 entering extended mode
 **./Final.tex
 (Final.tex
@@ -1570,19 +1570,25 @@ File: Images/Bipartite.png Graphic file (type png)
 <use Images/Bipartite.png>
 Package pdftex.def Info: Images/Bipartite.png  used on input line 191.
 (pdftex.def)             Requested size: 278.53995pt x 55.33157pt.
- [4 <./Images/Bipartite.png>] [5] (Final.aux)
+ [4 <./Images/Bipartite.png>]
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 265.
+
+("C:\Users\Micah Hayden\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\t1pc
+r.fd"
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [5] (Final.aux)
 Package logreq Info: Writing requests to 'Final.run.xml'.
 \openout1 = `Final.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38305 strings out of 492970
- 770615 string characters out of 3123484
- 1189442 words of memory out of 3000000
- 41638 multiletter control sequences out of 15000+200000
- 576086 words of font info for 80 fonts, out of 3000000 for 9000
+ 38340 strings out of 492970
+ 771197 string characters out of 3123484
+ 1189477 words of memory out of 3000000
+ 41668 multiletter control sequences out of 15000+200000
+ 576707 words of font info for 82 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 63i,8n,101p,1010b,1244s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 63i,8n,101p,1010b,1333s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/base
 /8r.enc}<C:/Users/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmex10.pfb><C:/Users/Micah Hayden/AppData/Local/Programs/MiKTe
@@ -1608,13 +1614,14 @@ sers/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmsy6.pfb><C:/Users/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Micah Hayden/AppData/Local/Programs/
 MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Micah Hayden/AppD
-ata/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Micah 
-Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/U
-sers/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmri
-8a.pfb>
-Output written on Final.pdf (5 pages, 301592 bytes).
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/Mica
+h Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:
+/Users/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utm
+r8a.pfb><C:/Users/Micah Hayden/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on Final.pdf (5 pages, 314965 bytes).
 PDF statistics:
- 157 PDF objects out of 1000 (max. 8388607)
+ 161 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  182 words of extra memory for PDF output out of 10000 (max. 10000000)
 
